@@ -16,7 +16,7 @@ function EmptyChatContainer() {
           <h3>Hi
             <span className='text-purple-500' >! </span>
             Welcome to 
-            <span className='text=purple-500'> Syncronus </span>
+            <span className='text-purple-500'> Syncronus </span>
             Chat App 
             <span className='text=purple-500'>.</span>
 

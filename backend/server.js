@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/AuthRoutes.js";
 import cookieParser from "cookie-parser";
+import contactRoutes from "./routes/ContactRoutes.js";
+import setupSocket from "./socket.js";
+import messagesRoutes from "./routes/MessageRoutes.js";
 
 dotenv.config();
 
@@ -16,12 +19,13 @@ app.use(express.json())
 // app.use(cors())
 
 app.use(cors({
-    origin: 'http://localhost:5173', // Update to your frontend URL
+    origin: process.env.ORIGIN, 
     credentials: true,
   }));
   
 
 app.use("/uploads/profiles" , express.static("uploads/profiles"));
+app.use("/uploads/files", express.static("uploads/files") );
 
 app.use(cookieParser());
 
@@ -30,13 +34,18 @@ connectDB();
 
 //api endpoints
 
-app.use("/api/auth", authRoutes)
+app.use("/api/auth", authRoutes);
+app.use("/api/contacts", contactRoutes );
+app.use("/api/messages", messagesRoutes);
 
 app.get("/" , (req,res)=>{
     res.send("API working")
 })
 
 
-app.listen(port ,()=>{
+
+const server = app.listen(port ,()=>{
     console.log(`Server started on http://localhost:${port}`)
-} )
+} );
+
+setupSocket(server);
