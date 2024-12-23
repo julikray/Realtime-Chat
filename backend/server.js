@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import contactRoutes from "./routes/ContactRoutes.js";
 import setupSocket from "./socket.js";
 import messagesRoutes from "./routes/MessageRoutes.js";
+import channelRoutes from "./routes/ChannelRoutes.js";
 
 dotenv.config();
 
@@ -37,6 +38,8 @@ connectDB();
 app.use("/api/auth", authRoutes);
 app.use("/api/contacts", contactRoutes );
 app.use("/api/messages", messagesRoutes);
+app.use("/api/channel", channelRoutes );
+
 
 app.get("/" , (req,res)=>{
     res.send("API working")

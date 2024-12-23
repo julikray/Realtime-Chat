@@ -100,7 +100,6 @@ const handleSignup = async () => {
           <div className="flex items-center justify-center flex-col ">
             <div className="flex items-center justify-center ">
               <h1 className='text-5xl font-bold md:text-6xl  '> Welcome </h1>
-              {/* <img src="" alt="" /> */}
             </div>
             <p className='font-medium text-center' >
               Fill in the details to get started with the best chat app!
@@ -163,6 +162,10 @@ const handleSignup = async () => {
               </TabsContent>
             </Tabs>
           </div>
+        </div>
+        <div className="hidden xl:flex justify-center items-center " >
+        <img  src="./download.png" alt="" />
+
         </div>
       </div>
 

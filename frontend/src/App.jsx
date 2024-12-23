@@ -117,6 +117,7 @@ import { useAppStore } from "./store";
 import { api } from "./lib/api";
 import { GET_USER_INFO } from "./utils/constants";
 
+
 const PrivateRoute = ({ children }) => {
   const { userInfo } = useAppStore();
   const isAuthenticated = !!userInfo; // Check if userInfo exists
@@ -170,6 +171,7 @@ function App() {
   }
 
   return (
+  
     <Routes>
       <Route
         path="/auth"
@@ -196,7 +198,10 @@ function App() {
         }
       />
       <Route path="*" element={<Navigate to="/auth" />} />
+      
     </Routes>
+  
+
   );
 }
 
