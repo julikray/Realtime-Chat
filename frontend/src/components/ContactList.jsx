@@ -65,7 +65,17 @@ const ContactList = ({ contacts, isChannel = false }) => {
                 </div>
               )}
 
-              <span>{contactName}</span>
+              {isChannel ? (
+                 <span>{contactName}</span>
+                
+              ) : (
+                <span>
+                  {contact.firstName ? `${contact.firstName} ${contact.lastName} ` : contact.email}
+                </span>
+              ) } 
+
+
+             
             </div>
           </div>
         );
@@ -75,3 +85,6 @@ const ContactList = ({ contacts, isChannel = false }) => {
 };
 
 export default ContactList;
+
+
+

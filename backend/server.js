@@ -11,13 +11,13 @@ import channelRoutes from "./routes/ChannelRoutes.js";
 
 dotenv.config();
 
-//app config
-const app = express()
+const app = express();
 const port = 4000;
 
-//middleware
-app.use(express.json())
-// app.use(cors())
+// Middleware
+app.use(express.json());
+app.use(cors({ origin: process.env.ORIGIN, credentials: true }));
+
 
 app.use(cors({
     origin: process.env.ORIGIN, 
@@ -25,30 +25,28 @@ app.use(cors({
   }));
   
 
-app.use("/uploads/profiles" , express.static("uploads/profiles"));
-app.use("/uploads/files", express.static("uploads/files") );
+app.use("/uploads/profiles", express.static("uploads/profiles"));
+app.use("/uploads/files", express.static("uploads/files"));
+app.use("/uploads/audio", express.static("uploads/audio"));
+app.use(cookieParser());
 
 app.use(cookieParser());
 
-//db connection
+// DB connection
 connectDB();
 
-//api endpoints
-
+// API endpoints
 app.use("/api/auth", authRoutes);
-app.use("/api/contacts", contactRoutes );
+app.use("/api/contacts", contactRoutes);
 app.use("/api/messages", messagesRoutes);
-app.use("/api/channel", channelRoutes );
+app.use("/api/channel", channelRoutes);
 
+app.get("/", (req, res) => {
+  res.send("API is working");
+});
 
-app.get("/" , (req,res)=>{
-    res.send("API working")
-})
-
-
-
-const server = app.listen(port ,()=>{
-    console.log(`Server started on http://localhost:${port}`)
-} );
+const server = app.listen(port, () => {
+  console.log(`Server started on http://localhost:${port}`);
+});
 
 setupSocket(server);

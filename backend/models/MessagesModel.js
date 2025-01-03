@@ -1,37 +1,92 @@
+// import mongoose from "mongoose";
+
+
+// const messageSchema = new mongoose.Schema({
+//   sender: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     ref: "Users",
+//     required: true,
+//   },
+//   recipient: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     ref: "Users",
+//     required: false,
+//   },
+//   messageType: {
+//     type: String,
+//     enum: ["text", "file", "gif", "audio"], 
+//     required: true,
+//   },
+//   content: {
+//     type: String,
+//     required: function () {
+//       return this.messageType === "text";
+//     },
+//   },
+//   fileUrl: {
+//     type: String,
+//     required: function () {
+//       return this.messageType === "file" || this.messageType === "gif";
+//     },
+//   },
+//   audioUrl: {
+//     type: String,
+//     required: function () {
+//       return this.messageType === "audio";
+//     },
+//   },
+//   timestamp: {
+//     type: Date,
+//     default: Date.now,
+//   },
+// });
+
+// const Message = mongoose.model("Messages", messageSchema);
+
+// export default Message;
+
+
+
 import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema({
-    sender: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Users",
-        required: true,
+  sender: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Users",
+    required: true,
+  },
+  recipient: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Users",
+    required: false,
+  },
+  messageType: {
+    type: String,
+    enum: ["text", "file", "gif", "audio"],
+    required: true,
+  },
+  content: {
+    type: String,
+    required: function () {
+      return this.messageType === "text";
     },
-    recipient: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Users",
-        required: false,
+  },
+  fileUrl: {
+    type: String,
+    required: function () {
+      return this.messageType === "file" || this.messageType === "gif";
     },
-    messageType: {
-        type: String,
-        enum: ["text", "file", "gif"], 
-        required: true,
+  },
+  audioUrl: {
+    type: String,
+    required: function () {
+      return this.messageType === "audio";
     },
-    content: {
-        type: String,
-        required: function () {
-            return this.messageType === "text";
-        },
-    },
-    fileUrl: {
-        type: String,
-        required: function () {
-            return this.messageType === "file" || this.messageType === "gif";
-        },
-    },
-    timestamp: {
-        type: Date,
-        default: Date.now,
-    },
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const Message = mongoose.model("Messages", messageSchema);

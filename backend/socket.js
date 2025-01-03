@@ -1,5 +1,7 @@
 import { Server as SocketIOServer } from "socket.io";
 import Message from "./models/MessagesModel.js";
+import Channel from "./models/ChannelModel.js";
+
 
 const setupSocket = (server) => {
     const io = new SocketIOServer(server, {
@@ -65,18 +67,19 @@ const setupSocket = (server) => {
         const finalData = { ...messageData._doc , channelId: channel._id};
 
         if(channel && channel.members){
-            channel.members.forEach((members)=>{
-                const membersSocketId = userSocketMap.get(members._id.toString());
-                if(membersSocketId){
-                    io.to(membersSocketId).emit("recieve-channel-message", finalData);
+            channel.members.forEach((member)=>{
+                const memberSocketId = userSocketMap.get(member._id.toString());
+                if(memberSocketId){
+                    io.to(memberSocketId).emit("recieve-channel-message", finalData);
                 }
 
-                const adminSocketId = userSocketMap.get(channel.admin._id.toString());
-                if(adminSocketId){
-                    io.to(adminSocketId).emit("recieve-channel-message", finalData);
-                }
+               
 
             })
+            const adminSocketId = userSocketMap.get(channel.admin._id.toString());
+            if(adminSocketId){
+                io.to(adminSocketId).emit("recieve-channel-message", finalData);
+            }
         }
 
     }
