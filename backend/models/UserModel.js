@@ -31,7 +31,8 @@ const userSchema = new mongoose.Schema({
     profileSetup:{
         type:Boolean,
         default:false,
-    }
+    },
+    
 })
 
 userSchema.pre("save", async function (next) {

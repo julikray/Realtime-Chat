@@ -59,7 +59,7 @@ const GifSearch = ({ onGifSelect }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-[#2e2b33] text-white p-6 rounded-lg shadow-lg">
+    <div className=" max-w-md mx-auto bg-[#2e2b33] text-white p-6 rounded-lg shadow-lg  ">
       {/* Search Box */}
       <div className="flex items-center space-x-4 mb-4">
         <input

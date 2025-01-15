@@ -1,5 +1,4 @@
 import React from 'react'
-// import Lottie from 'react-lottie'
 
 function EmptyChatContainer() {
   return (
@@ -23,7 +22,6 @@ function EmptyChatContainer() {
           </h3>
 
         </div>
-    
     
     </div>
   )

@@ -3,7 +3,11 @@ import VoiceMsg from "@/components/VoiceMsg";
 import { api } from "@/lib/api";
 import { getColor } from "@/lib/utils";
 import { useAppStore } from "@/store";
-import { GET_ALL_MESSAGES_ROUTE, GET_CHANNEL_MESSAGES, HOST } from "@/utils/constants";
+import {
+  GET_ALL_MESSAGES_ROUTE,
+  GET_CHANNEL_MESSAGES,
+  HOST,
+} from "@/utils/constants";
 import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
@@ -44,8 +48,8 @@ function MessageContainer() {
     const getChannelMessages = async () => {
       try {
         const response = await api.get(
-         `${GET_CHANNEL_MESSAGES}/${selectedChatData._id}`,
-       
+          `${GET_CHANNEL_MESSAGES}/${selectedChatData._id}`,
+
           { withCredentials: true }
         );
 
@@ -58,10 +62,10 @@ function MessageContainer() {
     };
 
     // getMessages();
-    if(selectedChatData._id){
-      if(selectedChatType === "contact") getMessages();
+    if (selectedChatData._id) {
+      if (selectedChatType === "contact") getMessages();
       else if (selectedChatType === "channel") getChannelMessages();
-        }
+    }
   }, [selectedChatData, selectedChatType, setSelectedChatMessages]);
 
   useEffect(() => {
@@ -176,8 +180,15 @@ function MessageContainer() {
             </div>
           </div>
         )}
-        
-        
+
+        {message.messageType === "audio" && (
+          <div
+            className={`border ${containerClass} inline-block rounded my-1 max-w-[90%] mobileL:max-w-[75%]`}
+          >
+            <VoiceMsg message={message} />
+          </div>
+        )}
+
         <div className="text-xs text-gray-600">
           {moment(message.timestamp).format("LT")}
         </div>
@@ -185,14 +196,12 @@ function MessageContainer() {
     );
   };
 
-
-
   const renderChannelMessages = (message) => {
     const isSender = message.sender._id === userInfo.id;
     const containerClass = isSender
       ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
       : "bg-[#2a2b33]/5 text-white/80 border-[#ffffff]/20";
-  
+
     return (
       <div className={`mt-5 ${isSender ? "text-right" : "text-left"}`}>
         {/* Handle Text Messages */}
@@ -203,7 +212,7 @@ function MessageContainer() {
             {message.content}
           </div>
         )}
-  
+
         {/* Handle File Messages */}
         {message.messageType === "file" && (
           <div
@@ -239,7 +248,7 @@ function MessageContainer() {
             )}
           </div>
         )}
-  
+
         {/* Handle GIF Messages */}
         {message.messageType === "gif" && (
           <div
@@ -260,7 +269,15 @@ function MessageContainer() {
             </div>
           </div>
         )}
-  
+
+        {message.messageType === "audio" && (
+          <div
+            className={`border ${containerClass} inline-block rounded my-1 max-w-[90%] mobileL:max-w-[75%]`}
+          >
+            <VoiceMsg message={message} />
+          </div>
+        )}
+
         {/* Sender Details */}
         {message.sender._id !== userInfo.id ? (
           <div className="flex items-center justify-start gap-3">
@@ -299,7 +316,6 @@ function MessageContainer() {
       </div>
     );
   };
-  
 
   return (
     <div className="flex-1 overflow-y-auto scrollbar-hidden p-4 px-8 w-full mobileS:px-2 mobileL:px-6">

@@ -4,6 +4,19 @@ export const createChatSlice = (set, get) => ({
   selectedChatMessages: [],
   directMessagesContacts: [],
   channels:[],
+
+  callType: null, // 'voice' or 'video'
+  callData: null, // Details about the call (e.g., recipient info, channel ID)
+  isCallActive: false, // Whether a call is currently active
+
+  // Start voice or video call
+  startVoiceCall: (callData) => set({ callType: "voice", callData, isCallActive: true }),
+  startVideoCall: (callData) => set({ callType: "video", callData, isCallActive: true }),
+
+  // End call
+  endCall: () => {set({ callType: null, callData: null, isCallActive: false });},
+
+
   setChannels: (channels)=> set({channels}),
   setSelectedChatType: (selectedChatType) => set({ selectedChatType }),
   setSelectedChatData: (selectedChatData) => set({ selectedChatData }),

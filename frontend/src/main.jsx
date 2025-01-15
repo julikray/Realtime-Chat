@@ -7,15 +7,12 @@ import { SocketProvider } from "./context/SocketContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <>
-  <SocketProvider>
-  <BrowserRouter>
-
-  
-
-    <App />
-    <Toaster closeButton />
-  </BrowserRouter>
-  </SocketProvider>
-  
+    <SocketProvider>
+      <BrowserRouter>
+       
+        <App />
+        <Toaster closeButton />
+      </BrowserRouter>
+    </SocketProvider>
   </>
 );

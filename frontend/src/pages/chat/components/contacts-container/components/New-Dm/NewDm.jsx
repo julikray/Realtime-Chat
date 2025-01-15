@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
-import { use } from "react";
 import { FaPlus } from "react-icons/fa";
 import { api } from "@/lib/api";
 import { HOST, SEARCH_CONTACTS_ROUTES } from "@/utils/constants";

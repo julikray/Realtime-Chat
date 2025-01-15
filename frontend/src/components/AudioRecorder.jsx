@@ -9,7 +9,7 @@ import {
 } from "react-icons/fa";
 import { MdSend } from "react-icons/md";
 
-import WaveSurfer from "https://cdn.jsdelivr.net/npm/wavesurfer.js@7/dist/wavesurfer.esm.js";
+import WaveSurfer from 'wavesurfer.js'
 import axios from "axios";
 import { HOST, UPLOAD_AUDIO_ROUTE } from "@/utils/constants";
 import { useSocket } from "@/context/SocketContext";
@@ -26,6 +26,7 @@ function AudioRecorder({ hide }) {
   const [totalDuration, setTotalDuration] = useState(0);
   const [isPlaying, setisPlaying] = useState(false);
   const [renderedAudio, setRenderedAudio] = useState(null);
+
 
   const audioRef = useRef(null);
   const mediaRecorderRef = useRef(null);
@@ -76,6 +77,7 @@ function AudioRecorder({ hide }) {
     setCurrentPlaybackTime(0);
     setTotalDuration(0);
     setRecording(true);
+    setRecordedAudio(null);
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then((stream) => {
@@ -179,6 +181,68 @@ function AudioRecorder({ hide }) {
   // };
 
 
+// const sendRecording = async () => {
+//   try {
+//     const formData = new FormData();
+//     formData.append("audio", renderedAudio); 
+//     const response = await axios.post(`${HOST}/${UPLOAD_AUDIO_ROUTE}`, formData, {
+//       headers: {
+//         "Content-Type": "multipart/form-data",
+//       },
+//       params: {
+//         from: userInfo.id,
+//         to: selectedChatData.id,
+//       },
+//     });
+
+    
+//     if (response.status === 200 && response.data) {
+//       if (selectedChatType === "contact") {
+//         socket.emit("sendMessage", {
+//           sender: userInfo.id,
+//           content: undefined,
+//           recipient: selectedChatData._id,
+//           messageType: "audio",
+//           audioUrl: response.data.audioUrl,
+//         });
+//       } else if (selectedChatType === "channel") {
+//         socket.emit("send-channel-message", {
+//           sender: userInfo.id,
+//           content: undefined,
+//           messageType: "audio",
+//           audioUrl: response.data.audioUrl,
+//           channelId: selectedChatData._id,
+//         });
+//       }
+    
+//     }
+
+//     if (response.status === 200) {
+//       console.log(response.data);
+//       // Handle success, maybe emit a socket event
+//     }
+
+//     // if (response.status === 200) {
+//     //   socket.current.emit("send-msg", {
+//     //     to: selectedChatData?.id,
+//     //     from: userInfo?.id,
+//     //     message: response.data.message,
+//     //   });
+//     //   dispatch({
+//     //     type: reducerCases.addMessage,
+//     //     newMessage: {
+//     //       ...response.data.message,
+//     //     },
+//     //     fromSelf: true,
+//     //   });
+//     // }
+    
+//   } catch (error) {
+//     console.error("Error uploading audio:", error);
+//   }
+// };
+
+
 const sendRecording = async () => {
   try {
     const formData = new FormData();
@@ -192,53 +256,40 @@ const sendRecording = async () => {
         to: selectedChatData.id,
       },
     });
-
     
-    if (response.status === 200 && response.data) {
+    if (response.status === 200 && response.data.audioUrl) {
+      const audioUrl = response.data.audioUrl; // Ensure this URL is correct
+
       if (selectedChatType === "contact") {
         socket.emit("sendMessage", {
           sender: userInfo.id,
           content: undefined,
           recipient: selectedChatData._id,
-          messageType: "file",
-          fileUrl: response.data.filePath,
+          messageType: "audio",
+          audioUrl: audioUrl, // Use the URL returned from the backend
         });
-      } else if (selectedChatType === "channel") {
+        
+      } 
+      
+      else if (selectedChatType === "channel") {
         socket.emit("send-channel-message", {
           sender: userInfo.id,
           content: undefined,
-          messageType: "file",
-          fileUrl: response.data.filePath,
+          recipient: selectedChatData._id,
+          messageType: "audio",
+          audioUrl: audioUrl, 
           channelId: selectedChatData._id,
+         
         });
       }
-     
+      
     }
-
-    if (response.status === 200) {
-      console.log(response.data);
-      // Handle success, maybe emit a socket event
-    }
-
-    // if (response.status === 200) {
-    //   socket.current.emit("send-msg", {
-    //     to: selectedChatData?.id,
-    //     from: userInfo?.id,
-    //     message: response.data.message,
-    //   });
-    //   dispatch({
-    //     type: reducerCases.addMessage,
-    //     newMessage: {
-    //       ...response.data.message,
-    //     },
-    //     fromSelf: true,
-    //   });
-    // }
-    
   } catch (error) {
     console.error("Error uploading audio:", error);
   }
 };
+
+
   const formatTime = (time) => {
     if (isNaN(time)) return "00:00";
     const minutes = Math.floor(time / 60);
@@ -287,6 +338,7 @@ const sendRecording = async () => {
           <FaMicrophone
             className="text-red-500"
             onClick={handleStartRecording}
+          
           />
         ) : (
           <FaPauseCircle
@@ -300,6 +352,7 @@ const sendRecording = async () => {
           className="text-panel-header-icon cursor-pointer mr-4"
           title="Send"
           onClick={sendRecording}
+         
         />
       </div>
     </div>

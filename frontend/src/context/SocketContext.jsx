@@ -53,7 +53,6 @@ export const SocketProvider = ({ children }) => {
 
 
       if (socket.current) {
-        // Safely add event listeners
         socket.current.on("recieveMessage", handleRecieveMessage);
       }
 

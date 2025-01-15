@@ -3,11 +3,32 @@ import { getColor } from "@/lib/utils";
 import { useAppStore } from "@/store";
 import { HOST } from "@/utils/constants";
 import React from "react";
+import { IoVideocam } from "react-icons/io5";
+import { MdCall } from "react-icons/md";
 import { RiCloseFill } from "react-icons/ri";
 
 function ChatHeader() {
-  const { closeChat, selectedChatData, selectedChatType } = useAppStore();
+  const {
+    closeChat,
+    selectedChatData,
+    selectedChatType,
+    startVoiceCall,
+    startVideoCall,
+  } = useAppStore();
 
+  const handleVoiceCall = () => {
+    startVoiceCall({
+      recipientId: selectedChatData.id,
+      recipientName: `${selectedChatData.firstName} ${selectedChatData.lastName}`,
+    });
+  };
+
+  const handleVideoCall = () => {
+    startVideoCall({
+      recipientId: selectedChatData.id,
+      recipientName: `${selectedChatData.firstName} ${selectedChatData.lastName}`,
+    });
+  };
   return (
     <div className="h-[10vh] border-b-2 border-[#2f303b] flex items-center justify-between px-10 ">
       <div className="flex gap-5 items-center w-full justify-between ">
@@ -48,6 +69,10 @@ function ChatHeader() {
         </div>
 
         <div className="flex items-center justify-center gap-5  ">
+
+          <MdCall className="text-panel-header-icon cursor-pointer text-xl  " onClick={handleVoiceCall}  />
+          <IoVideocam className="text-panel-header-icon cursor-pointer text-xl "  onClick={handleVideoCall} />
+          
           <button
             className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-300 transition-all "
             onClick={closeChat}
