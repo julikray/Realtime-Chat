@@ -124,7 +124,7 @@ import channelRoutes from "./routes/ChannelRoutes.js";
 dotenv.config();
 
 const app = express();
-const port = 4000;
+const port = process.env.PORT;
 
 // CORS configuration to allow the frontend URL
 app.use(cors({

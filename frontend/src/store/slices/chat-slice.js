@@ -5,16 +5,25 @@ export const createChatSlice = (set, get) => ({
   directMessagesContacts: [],
   channels:[],
 
-  callType: null, // 'voice' or 'video'
-  callData: null, // Details about the call (e.g., recipient info, channel ID)
-  isCallActive: false, // Whether a call is currently active
 
-  // Start voice or video call
-  startVoiceCall: (callData) => set({ callType: "voice", callData, isCallActive: true }),
-  startVideoCall: (callData) => set({ callType: "video", callData, isCallActive: true }),
+  videoCall: undefined,
+  voiceCall: undefined,
+  incomingVoiceCall: undefined,
+  incomingVideoCall: undefined,
 
-  // End call
-  endCall: () => {set({ callType: null, callData: null, isCallActive: false });},
+  // Action types (Methods for setting state)
+  setVideoCall: (videoCall) => set({ videoCall }),
+  setVoiceCall: (voiceCall) => set({ voiceCall }),
+  setIncomingVoiceCall: (incomingVoiceCall) => set({ incomingVoiceCall }),
+  setIncomingVideoCall: (incomingVideoCall) => set({ incomingVideoCall }),
+  endCall: () =>
+    set({
+      videoCall: undefined,
+      voiceCall: undefined,
+      incomingVoiceCall: undefined,
+      incomingVideoCall: undefined,
+    }),
+
 
 
   setChannels: (channels)=> set({channels}),

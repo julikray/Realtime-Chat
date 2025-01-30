@@ -1,59 +1,45 @@
-// import React from "react";
-// import { useAppStore } from "@/store";
-
-// function VoiceCall() {
-//   const { callData, endCall } = useAppStore();
-
-//   if (!callData) return null;
-
-//   return (
-//     <div className="voice-call">
-//       <h1>Voice Call with {callData.recipientName}</h1>
-//       <button onClick={endCall}>End Call</button>
-//     </div>
-//   );
-// }
-
-// export default VoiceCall;
-
-
-
-// import React from "react";
-// import { useAppStore } from "@/store";
-// import CallScreen from "./CallScreen";
-
-
-// function VoiceCall() {
-
-//   const { callData, endCall , socket , startVoiceCall } = useAppStore();
-
-//   return (
-//     <CallScreen data={startVoiceCall} />
-//   );
-// }
-
-// export default VoiceCall;
-
-
-import React from "react";
+import React, { useEffect } from "react";
 import { useAppStore } from "@/store";
 import CallScreen from "./CallScreen";
-import { useNavigate } from "react-router-dom";
+import { useSocket } from "@/context/SocketContext";
 
 function VoiceCall() {
-   const { callData, endCall } = useAppStore();
-    const navigate = useNavigate();
+  const { callData, endCall, voiceCall, userInfo } = useAppStore();
+
+  const socket = useSocket();
   
-    const handleEndCall = () => {
-      endCall(); // End the call
-      navigate("/chat"); // Navigate back to chat
-    };
-  return (
-    <CallScreen
-    data={callData}
-    endCall={handleEndCall} // Pass the custom end call function that handles navigation
-  />
-  );
+
+
+  // useEffect(() => {
+  //   // Initialize socket connection
+  //   socket.current = io("http://localhost:4000"); // Replace with your backend socket server URL
+
+  //   return () => {
+  //     // if (socket.current) {
+  //     //   socket.current.disconnect(); // Cleanup on component unmount
+  //     // }
+  //   };
+  // }, []);
+
+
+
+  useEffect(() => {
+    if (voiceCall.type === "out-going" && socket) {
+     
+      socket.emit("outgoing-voice-call", {
+         to: voiceCall.recipient._id,
+        from: {
+          id: userInfo.id,
+          // profileSetup: userInfo.profileSetup,
+          firstName: userInfo.firstName,
+        },
+        callType: voiceCall.callType,
+        roomId: voiceCall.roomId,
+      });
+    }
+  }, [voiceCall , userInfo]);
+
+  return <CallScreen data={voiceCall} />;
 }
 
 export default VoiceCall;

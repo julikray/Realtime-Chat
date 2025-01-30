@@ -1,94 +1,93 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppStore } from "@/store";
-import { useSocket } from "@/context/SocketContext";
-import { data } from "autoprefixer";
 import { MdOutlineCallEnd } from "react-icons/md";
+import { Avatar } from "@radix-ui/react-avatar";
+import { useSocket } from "@/context/SocketContext";
+import { AvatarImage } from "./ui/avatar";
+import { HOST } from "@/utils/constants";
+import { getColor } from "@/lib/utils";
 
-function CallScreen() {
-  
-   const { callData, endCall , startVideoCall } = useAppStore();
-  
- 
+function CallScreen({ data }) {
+  const { callData, endCall, selectedChatType, selectedChatData, userInfo } =
+    useAppStore();
+  const socket = useSocket();
 
-   const [callAccepted , setCallAccepted] = useState(false);
+  const [callAccepted, setCallAccepted] = useState(false);
 
-  
+  useEffect(() => {
+    console.log("CallScreen Data:", data); // Debug data structure
+  }, [data]);
+
+  const endcall = () => {
+    const id = data.id;
+    if (data.callType === "voice") {
+      socket.emit("reject-voice-call", {
+        from: id,
+      });
+    } else {
+      socket.emit("reject-video-call", {
+        from: id,
+      });
+    }
+
+    endCall();
+  };
 
   return (
-    <div className="w-full border-1 flex flex-col h-[100vh] overflow-hidden items-center justify-ce ">
-      <div className="flex flex-col gap-3 items-center " >
-       <span className="text-5xl " >{ data.name} </span>
-       <span>
-        {
-          callAccepted && data.callType !== "video" ? "On going call " : "Calling"
-
-        }
-       </span>
+    <div className="w-full border-1 flex flex-col h-[100vh] overflow-hidden items-center justify-center  ">
+      <div className="flex flex-col gap-3 items-center ">
+        <span className="text-5xl ">
+          {selectedChatData.name ||
+            `${data.recipient.firstName} ${data.recipient.lastName}`}{" "}
+        </span>
+        <span className="text-lg">
+          {callAccepted && selectedChatData.callType !== "video"
+            ? "On going call "
+            : "Calling"}
+        </span>
       </div>
-      {( !callAccepted || data.callType === "audio") && (<div className="my-24" >
-        <img
-        src={data.profilePicture}
+      {(!callAccepted || selectedChatData.callType === "audio") && (
+        <div className="my-24">
+          {/* <Avatar
+        src={selectedChatData.image}
         alt="avtart"
         height={300}
         width={300}
         className="rounded-full"
         
 
-        />
-      </div> ) }
+        /> */}
 
-      <div className="h-16 w-16 bg-red-600 flex items-center justify-center rounded-full " >
-        <MdOutlineCallEnd className="text-3xl cursor-pointer " onClick={endCall} />
+          <Avatar className="h-12 w-12 rounded-full overflow-hidden">
+            {selectedChatData.image ? (
+              <AvatarImage
+                src={`${HOST}/${selectedChatData.image}`}
+                alt="profile"
+                className="object-cover w-full h-full bg-black"
+              />
+            ) : (
+              <div
+                className={`uppercase h-12 w-12  text-lg border-[1px] flex items-center justify-center rounded-full ${getColor(
+                  selectedChatData.color
+                )} `}
+              >
+                {selectedChatData.firstName
+                  ? selectedChatData.firstName.split("").shift()
+                  : selectedChatData.email.split("").shift()}
+              </div>
+            )}
+          </Avatar>
+        </div>
+      )}
+
+      <div className="h-16 w-16 bg-red-600 flex items-center justify-center rounded-full ">
+        <MdOutlineCallEnd
+          className="text-3xl cursor-pointer "
+          onClick={endcall}
+        />
       </div>
-    
     </div>
   );
 }
 
 export default CallScreen;
-
-
-
-// import { useAppStore } from "@/store";
-// import React, { useState } from "react";
-// import { MdOutlineCallEnd } from "react-icons/md";
-
-// function CallScreen({ data }) {
-//   const {  endCall } = useAppStore();
-//   const [callAccepted, setCallAccepted] = useState(false);
-
-//   return (
-//     <div className="w-full border flex flex-col h-[100vh] overflow-hidden items-center justify-center">
-//       {/* Call Information */}
-//       <div className="flex flex-col gap-3 items-center">
-//         <span className="text-5xl">{data?.name || "Unknown Caller"}</span>
-//         <span>
-//           {callAccepted && data.callType !== "video" ? "On-going call" : "Calling..."}
-//         </span>
-//       </div>
-
-//       {/* Avatar */}
-//       {(!callAccepted || data.callType === "audio") && (
-//         <div className="my-24">
-//           <img
-//             src={data?.profilePicture || "/default-avatar.png"}
-//             alt="avatar"
-//             height={300}
-//             width={300}
-//             className="rounded-full"
-//           />
-//         </div>
-//       )}
-
-//       {/* End Call Button */}
-//       <div className="h-16 w-16 bg-red-600 flex items-center justify-center rounded-full">
-//         <MdOutlineCallEnd
-//           className="text-3xl cursor-pointer text-white"
-//           onClick={endCall}
-//         />
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default CallScreen;
