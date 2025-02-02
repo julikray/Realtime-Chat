@@ -2,6 +2,7 @@ import { compare } from "bcrypt";
 import User from "../models/UserModel.js";
 import jwt from "jsonwebtoken";
 import { renameSync, unlinkSync } from "fs";
+import { generateToken04 } from "../utils/TokenGenerator.js";
 
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
@@ -162,18 +163,17 @@ export const addProfileImage = async (request, response, next) => {
   }
 };
 
-
 export const removeProfileImage = async (request, response, next) => {
   try {
     const { userId } = request;
     const user = await User.findById(userId);
 
-    if(!user){
+    if (!user) {
       return response.status(404).send("User not found.");
     }
 
-    if(user.image){
-      unlinkSync(user.image)
+    if (user.image) {
+      unlinkSync(user.image);
     }
 
     user.image = null;
@@ -186,11 +186,9 @@ export const removeProfileImage = async (request, response, next) => {
   }
 };
 
-
 export const logout = async (request, response, next) => {
   try {
-   
-    response.cookie("jwt","", {maxAge:1 , secure:true, sameSite:"None" });
+    response.cookie("jwt", "", { maxAge: 1, secure: true, sameSite: "None" });
 
     return response.status(200).send("Logout successfully.");
   } catch (error) {
@@ -198,3 +196,53 @@ export const logout = async (request, response, next) => {
     return response.status(500).send("Internal Server Error");
   }
 };
+
+export const generateToken = async (request, response, next) => {
+  try {
+    const appId = parseInt(process.env.ZEGO_APP_ID);
+    const serverSecret = process.env.ZEGO_SERVER_SECRET;
+    const userId = request.params.userId;
+    const effectiveTime = 3600;
+    const payload = "";
+    console.log({ appId, serverSecret, userId });
+    if (appId && serverSecret && userId) {
+      const token = await generateToken04(
+        appId,
+        userId,
+        serverSecret,
+        effectiveTime,
+        payload
+      );
+      return response.status(200).json({ token });
+    }
+
+    return response
+      .status(400)
+      .send("User id, app id and server secret is required.");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// export const generateToken = async (request, response, next) => {
+//   console.log("Generated Token:", token);
+//   try {
+//     const appId = parseInt(process.env.ZEGO_APP_ID);
+//     const serverSecret = process.env.ZEGO_SERVER_SECRET;
+//     const userId = request.body.userId; // Ensure this is extracted correctly
+//     const effectiveTime = 3600;
+//     const payload = "";
+
+//     if (!appId || !serverSecret || !userId) {
+//       return response.status(400).send("User ID, App ID, and Server Secret are required.");
+//     }
+
+//     const token = generateToken04(appId, userId, serverSecret, effectiveTime, payload);
+
+//     return response.status(200).json({ token });
+
+//   } catch (error) {
+//     console.error("Error generating call token:", error);
+//     return response.status(500).send("Internal Server Error");
+//   }
+// };

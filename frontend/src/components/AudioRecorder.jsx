@@ -15,7 +15,7 @@ import { HOST, UPLOAD_AUDIO_ROUTE } from "@/utils/constants";
 import { useSocket } from "@/context/SocketContext";
 
 function AudioRecorder({ hide }) {
-  // Correct destructuring from the store
+  
   const { userInfo, selectedChatType, selectedChatData } = useAppStore();
   const socket = useSocket();
   const [recording, setRecording] = useState(false);
@@ -148,101 +148,6 @@ function AudioRecorder({ hide }) {
     setisPlaying(false);
   };
 
-  // const sendRecording = async () => {
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("audio", renderedAudio);
-  //     const response = await axios.post(UPLOAD_AUDIO_ROUTE, formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //       params: {
-  //         from: userInfo.id,
-  //         to: selectedChatData.id,
-  //       },
-  //     });
-  //     if (response.status === 201) {
-  //       socket.current.emit("send-msg", {
-  //         to: selectedChatData?.id,
-  //         from: userInfo?.id,
-  //         message: response.data.message,
-  //       });
-  //       dispatch({
-  //         type: reducerCases.addMessage,
-  //         newMessage: {
-  //           ...response.data.message,
-  //         },
-  //         fromSelf: true,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-
-// const sendRecording = async () => {
-//   try {
-//     const formData = new FormData();
-//     formData.append("audio", renderedAudio); 
-//     const response = await axios.post(`${HOST}/${UPLOAD_AUDIO_ROUTE}`, formData, {
-//       headers: {
-//         "Content-Type": "multipart/form-data",
-//       },
-//       params: {
-//         from: userInfo.id,
-//         to: selectedChatData.id,
-//       },
-//     });
-
-    
-//     if (response.status === 200 && response.data) {
-//       if (selectedChatType === "contact") {
-//         socket.emit("sendMessage", {
-//           sender: userInfo.id,
-//           content: undefined,
-//           recipient: selectedChatData._id,
-//           messageType: "audio",
-//           audioUrl: response.data.audioUrl,
-//         });
-//       } else if (selectedChatType === "channel") {
-//         socket.emit("send-channel-message", {
-//           sender: userInfo.id,
-//           content: undefined,
-//           messageType: "audio",
-//           audioUrl: response.data.audioUrl,
-//           channelId: selectedChatData._id,
-//         });
-//       }
-    
-//     }
-
-//     if (response.status === 200) {
-//       console.log(response.data);
-//       // Handle success, maybe emit a socket event
-//     }
-
-//     // if (response.status === 200) {
-//     //   socket.current.emit("send-msg", {
-//     //     to: selectedChatData?.id,
-//     //     from: userInfo?.id,
-//     //     message: response.data.message,
-//     //   });
-//     //   dispatch({
-//     //     type: reducerCases.addMessage,
-//     //     newMessage: {
-//     //       ...response.data.message,
-//     //     },
-//     //     fromSelf: true,
-//     //   });
-//     // }
-    
-//   } catch (error) {
-//     console.error("Error uploading audio:", error);
-//   }
-// };
-
-
 const sendRecording = async () => {
   try {
     const formData = new FormData();
@@ -258,7 +163,7 @@ const sendRecording = async () => {
     });
     
     if (response.status === 200 && response.data.audioUrl) {
-      const audioUrl = response.data.audioUrl; // Ensure this URL is correct
+      const audioUrl = response.data.audioUrl; 
 
       if (selectedChatType === "contact") {
         socket.emit("sendMessage", {
@@ -266,7 +171,7 @@ const sendRecording = async () => {
           content: undefined,
           recipient: selectedChatData._id,
           messageType: "audio",
-          audioUrl: audioUrl, // Use the URL returned from the backend
+          audioUrl: audioUrl, 
         });
         
       } 
@@ -300,40 +205,40 @@ const sendRecording = async () => {
   };
 
   return (
-    <div className="flex text-2xl w-full justify-end items-center bg-[#2e2b33] rounded-md gap-2 sm:gap-3 pr-3 sm:pr-5 ">
+    <div className="flex w-full justify-between items-center bg-[#2e2b33] rounded-md gap-3 p-2">
       <div className="pt-1">
         <FaTrash className="text-panel-header-icon" onClick={() => hide()} />
       </div>
-      <div className="mx-4 py-2 px-4 text-white text-lg flex gap-3 justify-center items-center rounded-full bg-[#1c1d25]">
+      <div className="flex-1 text-white text-lg flex gap-4 justify-center items-center rounded-md bg-[#1c1d25]">
         {recording ? (
           <div className="text-red-500 animate-pulse 2-60 text-center">
             Recording <span>{recordingDuration}s</span>
           </div>
         ) : (
-          <div>
+          <div className="px-3" >
             {recordedAudio && (
               <>
                 {!isPlaying ? (
-                  <FaPlay onClick={handlePlayRecording} />
+                  <FaPlay  onClick={handlePlayRecording} />
                 ) : (
-                  <FaStop onClick={handlePauseRecording} />
+                  <FaStop  onClick={handlePauseRecording} />
                 )}
               </>
             )}
           </div>
         )}
-        <div className="w-60" ref={waveFormRef} hidden={recording} />
+        <div className="w-full justify-center px-3 " ref={waveFormRef} hidden={recording} />
         {recordedAudio && isPlaying && (
-          <span>{formatTime(currentPlaybackTime)} </span>
+          <span className="text-sm px-3" >{formatTime(currentPlaybackTime)} </span>
         )}
         {recordedAudio && !isPlaying && (
-          <span>{formatTime(totalDuration)} </span>
+          <span className="px-3" >{formatTime(totalDuration)} </span>
         )}
 
         <audio ref={audioRef} hidden />
       </div>
 
-      <div className="mr-4">
+      <div  className="flex gap-4">
         {!recording ? (
           <FaMicrophone
             className="text-red-500"

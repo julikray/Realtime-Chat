@@ -129,12 +129,6 @@ function NewDm() {
 
           {searchedContacts.length <= 0 && (
             <div className="flex-1 md:flex mt-5 flex-col justify-center items-center hidden duration-1000 transition-all ">
-              {/* <Lottie isClickToPauseDisabled={true}
-             height={200}
-             width={200}
-             options={animationsDefaultOptions}
-     
-             /> */}
 
               <div className="text-opacity-00 text-white flex flex-col gap-5 items-center mt-5 lg:text-2xl text-xl transition-all duration-300 text-center">
                 <h3>

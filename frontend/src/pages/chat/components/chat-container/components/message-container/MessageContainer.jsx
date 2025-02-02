@@ -324,7 +324,7 @@ function MessageContainer() {
       {showImage && (
         <div className="fixed z-[1000] top-0 left-0 h-[100vh] w-[100vw] flex items-center justify-center backdrop-blur-lg flex-col">
           <div>
-            <img src={imageURL} alt="" className="h-[80vh] w-full bg-cover" />
+            <img src={`${HOST}/${imageURL}`} alt="" className="h-[80vh] w-full bg-cover" />
           </div>
           <div className="flex gap-5 fixed top-0 mt-2">
             <button

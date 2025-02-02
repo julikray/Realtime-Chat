@@ -24,7 +24,7 @@ const GifSearch = ({ onGifSelect }) => {
         setGifs((prevGifs) => [...prevGifs, ...data.data]);
       }
 
-      setHasMore(data.data.length > 0); // Stop loading if no more GIFs
+      setHasMore(data.data.length > 0); 
     } catch (error) {
       console.error("Error fetching GIFs:", error);
     } finally {
@@ -67,7 +67,7 @@ const GifSearch = ({ onGifSelect }) => {
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
-            setOffset(0); // Reset offset for new query
+            setOffset(0); 
           }}
           placeholder="Find something fun"
           className="flex-grow px-4 py-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -85,7 +85,7 @@ const GifSearch = ({ onGifSelect }) => {
         {gifs.map((gif, index) => (
           <div
             key={gif.id}
-            ref={index === gifs.length - 1 ? lastGifRef : null} // Reference the last GIF
+            ref={index === gifs.length - 1 ? lastGifRef : null} 
             className="bg-gray-700 rounded-lg overflow-hidden shadow-md cursor-pointer"
             onClick={() => {
               onGifSelect(gif.images.fixed_height.url);
@@ -95,13 +95,12 @@ const GifSearch = ({ onGifSelect }) => {
               src={gif.images.fixed_height.url}
               alt={gif.title}
               className="w-full h-auto object-cover"
-              style={{ height: "150px" }} // Ensure consistent size
+              style={{ height: "150px" }}
             />
           </div>
         ))}
       </div>
 
-      {/* Loading Indicator */}
       {isLoading && <p className="text-center mt-4">Loading...</p>}
     </div>
   );

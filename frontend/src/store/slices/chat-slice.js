@@ -11,7 +11,7 @@ export const createChatSlice = (set, get) => ({
   incomingVoiceCall: undefined,
   incomingVideoCall: undefined,
 
-  // Action types (Methods for setting state)
+  
   setVideoCall: (videoCall) => set({ videoCall }),
   setVoiceCall: (voiceCall) => set({ voiceCall }),
   setIncomingVoiceCall: (incomingVoiceCall) => set({ incomingVoiceCall }),
@@ -106,12 +106,7 @@ export const createChatSlice = (set, get) => ({
     set({directMessagesContacts: dmContacts});
 
   },
-  leaveGroup: (groupId) => {
-    setState((state) => ({
-      contacts: state.contacts.filter((contact) => contact._id !== groupId),
-    }));
-  },
-  
+
 
 
 });
