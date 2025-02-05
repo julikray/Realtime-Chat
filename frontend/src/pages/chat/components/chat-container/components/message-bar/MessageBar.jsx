@@ -191,9 +191,12 @@ function MessageBar() {
           <AudioRecorder hide={setShowAudioRecorder} />
         )}
       </div>
+
       <button
         className="bg-[#8417ff] rounded-md flex items-center justify-center p-3 sm:p-4 focus:outline-none hover:bg-[#741bda] transition-all"
-        onClick={message.trim() ? handleSendMessage : () => setShowAudioRecorder(true)}
+        onClick={
+          message.trim() ? handleSendMessage : () => setShowAudioRecorder(true)
+        }
       >
         {message.trim() ? (
           <IoSend className="text-xl sm:text-2xl" />

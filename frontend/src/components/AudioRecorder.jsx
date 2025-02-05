@@ -173,9 +173,7 @@ const sendRecording = async () => {
           messageType: "audio",
           audioUrl: audioUrl, 
         });
-        
       } 
-      
       else if (selectedChatType === "channel") {
         socket.emit("send-channel-message", {
           sender: userInfo.id,
@@ -184,10 +182,11 @@ const sendRecording = async () => {
           messageType: "audio",
           audioUrl: audioUrl, 
           channelId: selectedChatData._id,
-         
         });
       }
-      
+
+     
+      hide(false);  
     }
   } catch (error) {
     console.error("Error uploading audio:", error);

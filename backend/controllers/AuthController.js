@@ -3,6 +3,9 @@ import User from "../models/UserModel.js";
 import jwt from "jsonwebtoken";
 import { renameSync, unlinkSync } from "fs";
 import { generateToken04 } from "../utils/TokenGenerator.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
@@ -197,6 +200,9 @@ export const logout = async (request, response, next) => {
   }
 };
 
+
+
+
 export const generateToken = async (request, response, next) => {
   try {
     const appId = parseInt(process.env.ZEGO_APP_ID);
@@ -223,26 +229,3 @@ export const generateToken = async (request, response, next) => {
     console.log(error);
   }
 };
-
-// export const generateToken = async (request, response, next) => {
-//   console.log("Generated Token:", token);
-//   try {
-//     const appId = parseInt(process.env.ZEGO_APP_ID);
-//     const serverSecret = process.env.ZEGO_SERVER_SECRET;
-//     const userId = request.body.userId; // Ensure this is extracted correctly
-//     const effectiveTime = 3600;
-//     const payload = "";
-
-//     if (!appId || !serverSecret || !userId) {
-//       return response.status(400).send("User ID, App ID, and Server Secret are required.");
-//     }
-
-//     const token = generateToken04(appId, userId, serverSecret, effectiveTime, payload);
-
-//     return response.status(200).json({ token });
-
-//   } catch (error) {
-//     console.error("Error generating call token:", error);
-//     return response.status(500).send("Internal Server Error");
-//   }
-// };
