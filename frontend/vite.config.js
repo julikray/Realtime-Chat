@@ -26,7 +26,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: import.meta.env.VITE_NODE_ENV === 'development' 
+        target: process.env.VITE_NODE_ENV === 'development' 
           ? 'http://localhost:5173/'
           : 'https://realtime-chat-backend-q8xl.onrender.com/',
         changeOrigin: true,
