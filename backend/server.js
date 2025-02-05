@@ -16,7 +16,7 @@ const port = process.env.PORT;
 
 
 app.use(cors({
-  origin: process.env.ORIGIN || 'http://localhost:5173', 
+  origin: process.env.ORIGIN || 'https://realtime-chat-frontend-tviv.onrender.com', 
   credentials: true,
 }));
 
