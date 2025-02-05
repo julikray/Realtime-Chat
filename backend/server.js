@@ -15,18 +15,11 @@ const app = express();
 const port = process.env.PORT;
 
 
-// app.use(cors({
-//   origin: process.env.ORIGIN || 'https://realtime-chat-frontend-iwf9.onrender.com', 
-//   credentials: true,
-// }));
-
 app.use(cors({
-  origin: ['http://localhost:5173/', 'https://realtime-chat-frontend-iwf9.onrender.com/'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+  origin: process.env.ORIGIN || 'https://realtime-chat-frontend-vr2v.onrender.com', 
   credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
-  exposedHeaders: ['*', 'Authorization']
 }));
+
 
 
 
