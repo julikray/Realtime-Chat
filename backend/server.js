@@ -55,11 +55,7 @@ setupSocket(server);
 
 
 app.use((err, req, res, next) => {
-    res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
   console.error(err.stack);
   res.status(500).send('Something went wrong!');
 });
+
