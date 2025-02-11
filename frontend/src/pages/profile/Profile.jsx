@@ -105,7 +105,7 @@ function Profile() {
 
   const handleDeleteImage = async (event) => {
     try {
-      const response = await api.delete(REMOVE_PROFILE_IMAGE_ROUTE, {
+      const response = await api.delete(`${HOST}/${REMOVE_PROFILE_IMAGE_ROUTE}`, {
         withCredentials: true,
       });
 
